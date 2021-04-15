@@ -1,0 +1,110 @@
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+    </head>
+    <script>
+            //Created by Der Rote Kampfflieger a.k.a Lord for free use. Написан  от Der Rote Kampfflieger a.k.a Lord за свободна употреба
+            //Config Watch
+            var refreshRate = 1000 /*Time it takes for the page to refresh. / Времето, за което се обновява часовника. 1000ms = 1s */
+            var daysOfWeek = ["Нед", "Пон", "Вто", "Сря", "Четв", "Пет", "Съб"] /*Дните от седмицата, реда е умишлено такъв, може да сложите пълните имена ако искате */
+            var elementToInsert = "watch" //The element in the html file in which the time itself is inserted.Елемента в html файла, в който се вмъква часа.
+            //Do not touch unless you know what you are doing. Не променяйте кода по-надолу освен ако знаете какво правите.
+    </script>
+        <style>
+            :root {
+                --Background: rgb(0, 137, 250); /*От тук се сменя цвета на фона*/
+                --Color1: white; /*От тук се сменя цвета на текста в началото на анимацията*/
+                --Color2: rgb(255, 5, 5); /*От тук се сменя цвета на текста в края на анимацията*/
+                /*За да премахнете ефекта настройте еднакъв цвят*/
+                --position-top: 5%; /*От тук се наглася оттстоянието от горната част на екрана*/
+                --position-right: 2%; /*От тук се наглася оттстоянието от дясната част на екрана*/
+            }
+        </style>
+    <style>
+        #watch {
+            position: fixed;
+            top: var(--position-top);
+            right: var(--position-right);
+            width: 10em;
+            padding-left: 0.5em;
+            padding-right: auto;
+            font-size: 1.5em;
+            min-height: 20px;
+            background-color: var(--Background);
+            color: var(--Color1);
+            border-radius: 10px;
+            box-shadow: 1px 1px 1px 2px grey;
+            animation: wavy;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+        }
+        @keyframes wavy {
+            0% {
+                color: var(--Color1);
+            }
+            50% {
+                color: var(--Color2);
+            }
+            100% {
+                color: var(--Color1);
+            }
+        }
+        
+    </style>
+    <body>
+    <h1 id="watch"></h1> 
+    </body>
+    <script>
+       
+        function settime() {
+                var timenow = new Date()
+            let date = timenow.getDate();
+            let month = timenow.getMonth() + 1;
+            let min = timenow.getMinutes();
+            let hour = timenow.getHours();
+            if (date < 10 ) {
+                var date1 = date.toString()
+                date1 = "0" + date1
+            } else {
+                var date1 = date.toString()
+            }
+            if (month < 10) {
+                var month1 = month.toString()
+                month1 = "0" + month1
+            } else {
+                var month1 = month.toString()
+            }
+            if (min < 10) {
+                var min1 = min.toString()
+                min1 = "0" + min1
+            } else {
+                var min1 = min.toString()
+            }
+            if (hour < 10) {
+                var hour1 = hour.toString()
+                hour1 = "0" + hour1
+            } else {
+                var hour1 = hour.toString()
+            }
+            var currdate = hour1 + ":" + min1 + " " + daysOfWeek[timenow.getDay()] + " " + date1 + ":" + month1 + ":"+ timenow.getFullYear()
+            console.log(currdate)
+                document.getElementById(elementToInsert).innerHTML = currdate
+            }
+            setInterval(settime, refreshRate)
+
+            window.addEventListener("message", (event) => {
+                let data = event.data
+                    if(data.codetopass == "TurnOn") {
+                        if(data.stance == "toBe") {
+                            document.getElementById(elementToInsert).style.visibility = "visible"
+                        } else if (data.stance == "notToBe") {
+                            document.getElementById(elementToInsert).style.visibility = "hidden"
+                        }
+                }
+            
+        })
+
+    </script>
+
+</html>
