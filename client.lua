@@ -5,10 +5,17 @@ local Command = "time" -- Името на командата за показва
 print"=======Time script by Lord======="
 
 Citizen.CreateThread(function()
-	while ESX == nil do
-		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-		Citizen.Wait(0)
-	end
+    while ESX == nil do
+        TriggerEvent('esx:getSharedObject', function(obj)
+            ESX = obj
+        end)
+        Citizen.Wait(0)
+    end
+
+    while ESX.GetPlayerData().job == nil do
+        Citizen.Wait(10)
+    end
+    ESX.PlayerData = ESX.GetPlayerData()
 end)
 
 RegisterCommand(Command, function(source, args, rawCommand)
